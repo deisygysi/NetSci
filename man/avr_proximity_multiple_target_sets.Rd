@@ -2,7 +2,7 @@
 % Please edit documentation in R/prox_boot.R
 \name{avr_proximity_multiple_target_sets}
 \alias{avr_proximity_multiple_target_sets}
-\title{Title}
+\title{avr_proximity_multiple_target_sets}
 \usage{
 avr_proximity_multiple_target_sets(
   set,
@@ -15,7 +15,7 @@ avr_proximity_multiple_target_sets(
 )
 }
 \arguments{
-\item{set}{Name of the sets you have targets for. (In a drug-taget setup, those would be the drugs of interest).}
+\item{set}{Name of the sets you have targets for. (In a drug-target setup, those would be the drugs of interest).}
 
 \item{G}{The original graph (often an interactome).}
 
@@ -33,7 +33,7 @@ avr_proximity_multiple_target_sets(
 proximity and its significance based on the degree preserving randomization.
 }
 \description{
-Title
+avr_proximity_multiple_target_sets
 }
 \examples{
 set.seed(666)

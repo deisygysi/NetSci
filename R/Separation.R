@@ -27,7 +27,6 @@
 #' g = simplify(g)
 #'
 #' separation(G = g, ST = Diseases)
-#'
 
 
 separation = function(G, ST){

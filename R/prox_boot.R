@@ -1,6 +1,6 @@
-#' Title
+#' avr_proximity_multiple_target_sets
 #'
-#' @param set Name of the sets you have targets for. (In a drug-taget setup, those would be the drugs of interest).
+#' @param set Name of the sets you have targets for. (In a drug-target setup, those would be the drugs of interest).
 #' @param G The original graph (often an interactome).
 #' @param ST Set-Target data. It is a data.frame with two columns. ID and Target.
 #' @param source The source nodes (disease genes).

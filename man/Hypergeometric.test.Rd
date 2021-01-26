@@ -19,16 +19,16 @@ Hypergeometric.test(
 
 \item{universe_failure}{Is the number of elements of the set of the other set.}
 
-\item{size_collected}{The total of elemements in the universe}
+\item{size_collected}{The total of elements in the universe}
 
 \item{lower.tail}{Should the test be calculated on the lower tail? (Hypothesis test is lower than)}
 }
 \value{
-the pvalue for the hypergeometric test.
+the p-value for the hypergeometric test.
 }
 \description{
 Calculates the significance of an overlap of two sets using an hypergeometric test.
-   It is a wraper of the phyper function.
+   It is a wrapper of the `phyper` function.
 }
 \examples{
 require(magrittr)

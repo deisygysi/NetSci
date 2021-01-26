@@ -11,12 +11,12 @@
 #' @importFrom magrittr `%>%` `%<>%`
 #' @importFrom  igraph graph_from_data_frame bipartite_mapping V E as_incidence_matrix
 #' @return a list with the LCC
-#' - LCCZ all values from the randomizations
-#' - mean the average LCC of the randomizations
-#' - sd the sd LCC of the randomizations
-#' - Z The score
-#' - LCC the LCC of the given targets
-#' - emp_p the empirical p-value for the LCC
+#' - $LCCZ all values from the randomizations
+#' - $mean the average LCC of the randomizations
+#' - $sd the sd LCC of the randomizations
+#' - $Z The score
+#' - $LCC the LCC of the given targets
+#' - $emp\_p the empirical p-value for the LCC
 #'
 #' @export
 #'

@@ -1,6 +1,6 @@
 Package: NetSci
 Type: Package
-Title: Calculates basic network measures commonly used in Network Medicine
+Title: Calculates Basic Network Measures Commonly Used in Network Medicine
 Version: 0.1.0
 Author: Deisy Gysi 
 Maintainer: Deisy Morselli Gysi <deisy.ccnr@gmail.com>
