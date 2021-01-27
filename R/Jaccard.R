@@ -30,7 +30,8 @@ Jaccard = function(Data){
   if(is.data.frame(Data) == F){
     stop("Data must be a data.frame.")
   }
-  levels = Data[1,] %>% as.factor() %>% nlevels()
+
+  levels = Data[1,] %>% unique() %>% length()
   if(levels <= 1){
     stop("You need more than one type.")
   }
@@ -46,12 +47,12 @@ Jaccard = function(Data){
   names(gg) = colnames(gg) = rownames(A)
   NORM = matrix(NA, ncol = ncol(gg), nrow = nrow(gg))
   #Normalize the values
-  ADJ_for_DIS2DIS = gg
+  ADJ = gg
   pb <- utils::txtProgressBar(min = 0, max = (ncol(NORM)), style = 3)
   for( i in 1:ncol(NORM)){
     utils::setTxtProgressBar(pb, i)
     for(j in i:(nrow(NORM))){
-      NORM[i,j] = NORM[j,i] = ADJ_for_DIS2DIS[i,j]/(ADJ_for_DIS2DIS[i,i]+ADJ_for_DIS2DIS[j,j]-ADJ_for_DIS2DIS[i,j])
+      NORM[i,j] = NORM[j,i] = ADJ[i,j]/(ADJ[i,i]+ADJ[j,j]-ADJ[i,j])
     }
   }
   close(pb)
