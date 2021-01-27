@@ -48,7 +48,7 @@ LCC_Significance = function(N = N, Targets = Targets, G, bins =100, hypothesis =
   muC = mean(LCCZ)
   sdC = sd(LCCZ)
   Z = (LCC_1-muC)/sdC
-  Fn = ecdf(LCCZ)
+  Fn =stats::ecdf(LCCZ)
   if(hypothesis == "greater"){
     p = 1 - Fn(LCC_1)
   } else  if(hypothesis == "lower"){

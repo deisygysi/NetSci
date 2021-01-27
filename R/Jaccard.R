@@ -47,21 +47,22 @@ Jaccard = function(Data){
   names(gg) = colnames(gg) = rownames(A)
   NORM = matrix(NA, ncol = ncol(gg), nrow = nrow(gg))
   #Normalize the values
-  ADJ = gg
+  ADJ_for_DIS2DIS = gg
   pb <- utils::txtProgressBar(min = 0, max = (ncol(NORM)), style = 3)
   for( i in 1:ncol(NORM)){
     utils::setTxtProgressBar(pb, i)
     for(j in i:(nrow(NORM))){
-      NORM[i,j] = NORM[j,i] = ADJ[i,j]/(ADJ[i,i]+ADJ[j,j]-ADJ[i,j])
+      NORM[i,j] = NORM[j,i] = ADJ_for_DIS2DIS[i,j]/(ADJ_for_DIS2DIS[i,i]+ADJ_for_DIS2DIS[j,j]-ADJ_for_DIS2DIS[i,j])
     }
   }
   close(pb)
 
-  Genes = diag(gg) %>% as.data.frame()
-  Genes$ID = row.names(Genes)
-  Genes$prop = (Genes$./ sum(Genes$.) )%>% CoDiNA::normalize()
-  Genes$Count = Genes$.
-  Genes = Genes[,-1]
+  # Genes = diag(gg) %>% as.data.frame()
+  # Genes$ID = row.names(Genes)
+  # Genes$prop = (Genes$./ sum(Genes$.) )%>% CoDiNA::normalize()
+  # Genes$Count = Genes$.
+  # Genes = Genes[,-1]
+  #
   # Transform into a edge list
   rownames(NORM) = colnames(gg)
   colnames(NORM) = colnames(gg)
