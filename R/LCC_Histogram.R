@@ -1,9 +1,10 @@
 #' @title Histogram_LCC
-#' @description Plots the histogram to evaluate the significance of the LCC.
+#' @description Plots the histogram to evaluate the significance of the Largest Connected Component (LCC).
 #' @param LCC_L an output from the function LCC_Significance
 #' @param Name title of the plot
 #' @importFrom graphics abline hist title
 #' @importFrom stats ecdf sd
+#' @return An Histogram of the simulated LCC, and a red line of the actual LCC.
 #' @export
 #'
 #' @examples

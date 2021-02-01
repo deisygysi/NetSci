@@ -33,7 +33,9 @@ avr_proximity_multiple_target_sets(
 proximity and its significance based on the degree preserving randomization.
 }
 \description{
-avr_proximity_multiple_target_sets
+Calculates the average proximity from a set of targets to a set of source nodes.
+It is calculate using a degree preserving randomization. It is calculated as described in
+Guney, E. et al (2016) <doi.org:10.1038/ncomms10331>
 }
 \examples{
 set.seed(666)

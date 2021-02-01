@@ -4,7 +4,7 @@ Title: Calculates Basic Network Measures Commonly Used in Network Medicine
 Version: 0.1.0
 Author: Deisy Gysi 
 Maintainer: Deisy Morselli Gysi <deisy.ccnr@gmail.com>
-Description: Calculates network measures such as LCC, Proximity, Separation, Jaccard Index, 
+Description: Calculates network measures such as Largest Connected Component (LCC), Proximity, Separation, Jaccard Index, 
     along with permutation, when needed. 
 Imports: igraph, magrittr, wTO, CoDiNA, dplyr, Rfast,
          utils, binr

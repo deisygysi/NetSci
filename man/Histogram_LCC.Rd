@@ -11,8 +11,11 @@ Histogram_LCC(LCC_L, Name = NULL)
 
 \item{Name}{title of the plot}
 }
+\value{
+An Histogram of the simulated LCC, and a red line of the actual LCC.
+}
 \description{
-Plots the histogram to evaluate the significance of the LCC.
+Plots the histogram to evaluate the significance of the Largest Connected Component (LCC).
 }
 \examples{
 set.seed(666)

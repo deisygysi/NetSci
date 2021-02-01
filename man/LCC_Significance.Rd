@@ -36,7 +36,8 @@ a list with the LCC
 - $emp\_p the empirical p-value for the LCC
 }
 \description{
-Calculates the Largest Connected Component from a given graph, and calculates its significance using a degree preserving approach.
+Calculates the Largest Connected Component (LCC) from a given graph, and calculates its significance using a degree preserving approach.
+Menche, J., et al (2015) <doi.org:10.1126/science.1065103>
 }
 \examples{
 set.seed(666)

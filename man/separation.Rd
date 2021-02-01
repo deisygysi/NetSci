@@ -15,5 +15,7 @@ separation(G, ST)
 the separation and distance of modules.
 }
 \description{
-Calculates the separation of two set of targets on a network. Often used to measure separation of disease modules in a interactome.
+Calculates the separation of two set of targets on a network.
+Often used to measure separation of disease modules in a interactome.
+Separation is calculated as in Menche, J. et al (2015) <doi:10.1126/science.1257601>.
 }

@@ -8,7 +8,9 @@
 #' @param bins the number os bins for the degree preserving randomization.
 #' @param min_per_bin the minimum size of each bin.
 #' @importFrom dplyr pull filter bind_rows
-#'
+#' @description Calculates the average proximity from a set of targets to a set of source nodes.
+#' It is calculate using a degree preserving randomization. It is calculated as described in
+#' Guney, E. et al (2016) <doi.org:10.1038/ncomms10331>
 #' @return proximity and its significance based on the degree preserving randomization.
 #' @export
 #'

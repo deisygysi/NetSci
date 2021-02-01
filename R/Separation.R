@@ -1,5 +1,7 @@
 #' @title Separation
-#' @description Calculates the separation of two set of targets on a network. Often used to measure separation of disease modules in a interactome.
+#' @description Calculates the separation of two set of targets on a network.
+#' Often used to measure separation of disease modules in a interactome.
+#' Separation is calculated as in Menche, J. et al (2015) <doi:10.1126/science.1257601>.
 #' @param G The original graph (often an interactome).
 #' @param ST Set-Target data. It is a data.frame with two columns. ID and Target.
 #'
