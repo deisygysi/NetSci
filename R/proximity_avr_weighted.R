@@ -1,6 +1,6 @@
 #' Proximity from target to source
-#' @description Calculates the proximity (average or closest) from source to targets.
-#' @param G The original graph (often an interactome).
+#' @description Calculates the weighted average proximity from source to targets.
+#' @param G The original graph (often a weighted interactome).
 #' @param source nodes from the network (in a drug repurpusing set-up those are the disease genes)
 #' @param targets targets in the network (in a drug repurpusing set-up those are the drug-targets)
 #'

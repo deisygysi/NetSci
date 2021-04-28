@@ -11,7 +11,8 @@ avr_proximity_multiple_target_sets(
   source,
   N = 1000,
   bins = 100,
-  min_per_bin = 20
+  min_per_bin = 20,
+  weighted = FALSE
 )
 }
 \arguments{
@@ -45,6 +46,7 @@ Node.2 = sample(LETTERS[1:10], 15, replace = TRUE))
 net$value = 1
 net =  CoDiNA::OrderNames(net)
 net = unique(net)
+net$weight = runif(nrow(net))
 
 g <- igraph::graph_from_data_frame(net, directed = FALSE )
 S = c("N", "A", "F", "I")
@@ -58,5 +60,10 @@ G = g,
  bins = 5,
  min_per_bin = 2)
 
-
+avr_proximity_multiple_target_sets(set = c('T1', 'T2'),
+G = g,
+ source = S,
+ ST = rbind(T1,T2),
+ bins = 5,
+ min_per_bin = 2, weighted = TRUE)
 }

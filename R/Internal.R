@@ -188,7 +188,7 @@ pvals = function(x, val){
   dx <- xx[2L] - xx[1L]
   yy <- d$y
 
-  f <- approxfun(xx, yy)
+  f <- approxfun(xx, yy, rule = 2)
   C <- integrate(f, min(xx), max(xx))$value
   p.unscaled <- integrate(f, val, max(xx))$value
   p.scaled_gt <- p.unscaled / C
