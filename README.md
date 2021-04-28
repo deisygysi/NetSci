@@ -9,5 +9,5 @@ install.packages("devtools")
 library(devtools)
 install_github("deisygysi/NetSci") 
 
-load(NetSci)
+require(NetSci)
 ```
