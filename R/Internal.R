@@ -116,7 +116,8 @@ bins <- function(g, bins, min_bin , nodes){
 }
 
 
-boot_distance_aux <- function(n, bins_get, g, source, targets, DG, proximity){
+boot_distance_aux <- function(n, bins_get, g,
+                              source, targets, DG, proximity){
   OUT <- list()
   for ( j in 1:n){
     resampled <- list()
@@ -130,7 +131,10 @@ boot_distance_aux <- function(n, bins_get, g, source, targets, DG, proximity){
     }
     else if(proximity == "average"){
       OUT[[j]] <- proximity_average(g, new_nodes, targets)
+    }    else if(proximity == "weighted"){
+      OUT[[j]] <- proximity_average_weighted(g, new_nodes, targets)
     }
+
   }
   return(OUT)
 }
@@ -148,11 +152,23 @@ boot_distance = function(g, source, targets, bins, min_bin, n, proximity){
 boot_distance_IC= function(x, alpha, d){
   IC = stats::quantile(x, c(1-alpha/2, alpha/2))
 
-  d_fun <- stats::ecdf (x)
-  p_gt = 1 - d_fun(d)
-  p_lt = d_fun(d)
+  # d_fun <- stats::ecdf (x)
+  # p_gt = 1 - d_fun(d)
+  # p_lt = d_fun(d)
+  #
+  # dens = stats::density(x)
+  # p2_gt = sum(dens$y[dens$x>d])
+  # p2_lt = sum(dens$y[dens$x<d])
+
+  p = pvals(x = x, val = d)
+
   Z = (d - mean(x))/sd(x)
-  return(list(IC = IC, p_gt = p_gt, p_lt = p_lt, Z = Z))
+  return(list(IC = IC,
+              # p_gt = p_gt,
+              # p_lt = p_lt,
+              p_gt = p$p_gt,
+              p_lt = p$p_lt,
+              Z = Z))
 }
 
 boot_distance_p = function(g, source, targets, bins, min_bin, n, d, alpha, proximity){
@@ -162,4 +178,24 @@ boot_distance_p = function(g, source, targets, bins, min_bin, n, d, alpha, proxi
   return(y)
 }
 
+#############################
 
+pvals = function(x, val){
+
+  d = stats::density(x)
+
+  xx <- d$x
+  dx <- xx[2L] - xx[1L]
+  yy <- d$y
+
+  f <- approxfun(xx, yy)
+  C <- integrate(f, min(xx), max(xx))$value
+  p.unscaled <- integrate(f, val, max(xx))$value
+  p.scaled_gt <- p.unscaled / C
+
+  p.unscaled <- integrate(f,  min(xx), val)$value
+  p.scaled_lt <- p.unscaled / C
+
+  return(list(p_gt = p.scaled_gt,
+              p_lt = p.scaled_lt))
+}

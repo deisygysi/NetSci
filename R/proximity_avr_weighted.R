@@ -12,30 +12,31 @@
 #' @export
 #'
 #' @examples
-#' #' set.seed(666)
+#' set.seed(666)
 #' net  = data.frame(
 #' Node.1 = sample(LETTERS[1:15], 15, replace = TRUE),
 #' Node.2 = sample(LETTERS[1:10], 15, replace = TRUE))
 #' net$value = 1
 #' net =  CoDiNA::OrderNames(net)
 #' net = unique(net)
-#'
+#' net$weight = runif(nrow(net))
 #' g <- igraph::graph_from_data_frame(net, directed = FALSE )
 #' T = c("G", "A", "D")
 #' S = c("C", "M")
-#' proximity_average(g, source = S, targets = T)
+#' proximity_average_weighted(g, source = S, targets = T)
 
 
-proximity_average <- function(G, source, targets){
+proximity_average_weighted <- function(G, source, targets){
   `%<>%` <- magrittr::`%<>%`
   `%>%` <- magrittr::`%>%`
 
   source = source [source %in% V(G)$name] %>% unique
   targets = targets [targets %in% V(G)$name]%>% unique
   out = NA
-  igraph::E(G)$weight = 1
   if(length(source)> 0 & length(targets)> 0){
-    d <-  igraph::distances(G, source, targets, weights = NULL)
+    d <-  igraph::shortest.paths(G,
+                                 source,
+                                 targets)
     out = apply(d, 2, min) %>% mean()
   }
   return(out)

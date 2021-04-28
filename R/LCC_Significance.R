@@ -49,12 +49,22 @@ LCC_Significance = function(N = N, Targets = Targets, G, bins =100, hypothesis =
   muC = mean(LCCZ)
   sdC = sd(LCCZ)
   Z = (LCC_1-muC)/sdC
-  Fn =stats::ecdf(LCCZ)
+  p = pvals(x = LCCZ, val = LCC_1 )
+  # Fn =stats::ecdf(LCCZ)
+  # d = density(LCCZ)
   if(hypothesis == "greater"){
-    p = 1 - Fn(LCC_1)
+    p = p$p_gt
+    # p = 1 - Fn(LCC_1)
+    # p2 = sum(d$y[d$x>LCC_1])
   } else  if(hypothesis == "lower"){
-    p = Fn(LCC_1)
+    p = p$p_lt
+    # p = Fn(LCC_1)
+    # p2 = sum(d$y[d$x<LCC_1])
   }
 
-  return(list(LCCZ = LCCZ, mean = muC, sd = sdC, Z= Z, LCC = LCC_1, emp_p = p))
+  return(list(LCCZ = LCCZ, mean = muC,
+              sd = sdC,
+              Z= Z,
+              LCC = LCC_1,
+              emp_p = p))
 }
