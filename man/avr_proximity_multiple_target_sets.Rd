@@ -29,6 +29,8 @@ avr_proximity_multiple_target_sets(
 \item{bins}{the number os bins for the degree preserving randomization.}
 
 \item{min_per_bin}{the minimum size of each bin.}
+
+\item{weighted}{consider a weighted graph? TRUE/FALSE}
 }
 \value{
 proximity and its significance based on the degree preserving randomization.

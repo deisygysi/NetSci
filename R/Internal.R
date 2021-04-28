@@ -7,7 +7,7 @@
 #' @param n
 #' @param min_per_bin
 #' @importFrom magrittr `%>%` `%<>%`
-#' @importFrom stats quantile ecdf
+#' @importFrom stats quantile ecdf approxfun integrate
 #' @importFrom dplyr summarise group_by n
 #' @importFrom  igraph graph_from_data_frame bipartite_mapping degree V E as_incidence_matrix induced_subgraph
 #' @keywords internal
@@ -188,9 +188,9 @@ pvals = function(x, val){
   dx <- xx[2L] - xx[1L]
   yy <- d$y
 
-  f <- approxfun(xx, yy, rule = 2)
-  C <- integrate(f, min(xx), max(xx))$value
-  p.unscaled <- integrate(f, val, max(xx))$value
+  f <- stats::approxfun(xx, yy, rule = 2)
+  C <- stats::integrate(f, min(xx), max(xx))$value
+  p.unscaled <- stats::integrate(f, val, max(xx))$value
   p.scaled_gt <- p.unscaled / C
 
   p.unscaled <- integrate(f,  min(xx), val)$value
