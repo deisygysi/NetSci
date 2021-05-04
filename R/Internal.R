@@ -196,6 +196,12 @@ pvals = function(x, val){
   p.unscaled <- integrate(f,  min(xx), val)$value
   p.scaled_lt <- p.unscaled / C
 
+  p.scaled_gt = ifelse(p.scaled_gt > 1, 1, p.scaled_gt)
+  p.scaled_gt = ifelse(p.scaled_gt < 0, 0, p.scaled_gt)
+
+  p.scaled_lt = ifelse(p.scaled_lt > 1, 1, p.scaled_lt)
+  p.scaled_lt = ifelse(p.scaled_lt < 0, 0, p.scaled_lt)
+
   return(list(p_gt = p.scaled_gt,
               p_lt = p.scaled_lt))
 }
