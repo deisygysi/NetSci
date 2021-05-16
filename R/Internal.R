@@ -16,7 +16,11 @@
 
 
 
-LCC_Calc = function(PPIg,bins = 100, nodes, n, min_per_bin = 20){
+LCC_Calc = function(PPIg,
+                    bins = 100,
+                    nodes,
+                    n,
+                    min_per_bin = 20){
   `%<>%` <- magrittr::`%<>%`
   `%>%` <- magrittr::`%>%`
   # bin = NULL
@@ -24,14 +28,17 @@ LCC_Calc = function(PPIg,bins = 100, nodes, n, min_per_bin = 20){
   BINS = binr::bins(DG$., target.bins = bins,
                     exact.groups = FALSE,
                     minpts = min_per_bin)
-  numbers_factors = cut(DG$., binr::bins.getvals(BINS),
-                        labels = names(BINS$binct)) %>% as.numeric()
+  numbers_factors = cut(DG$.,
+                        binr::bins.getvals(BINS),
+                        labels = names(BINS$binct)) %>%
+    as.numeric()
   DG$bin = numbers_factors
   DG$names = row.names(DG)
   nodes_ppi = subset(DG, DG$names %in% nodes)
   bins_get = nodes_ppi %>%
     dplyr::group_by(bin) %>%
-    dplyr::summarise(., n = dplyr::n()) %>% as.data.frame()
+    dplyr::summarise(., n = dplyr::n()) %>%
+    as.data.frame()
 
   OUT = list()
   for ( j in 1:n){
@@ -48,7 +55,11 @@ LCC_Calc = function(PPIg,bins = 100, nodes, n, min_per_bin = 20){
   return(OUT)
 }
 
-LCC_p = function(n = 1000, PPI_g, Vn, bins = NULL, min_per_bin){
+LCC_p = function(n = 1000,
+                 PPI_g,
+                 Vn,
+                 bins = NULL,
+                 min_per_bin){
   `%<>%` <- magrittr::`%<>%`
   `%>%` <- magrittr::`%>%`
 
@@ -189,11 +200,11 @@ pvals = function(x, val){
   yy <- d$y
 
   f <- stats::approxfun(xx, yy, rule = 2)
-  C <- stats::integrate(f, min(xx), max(xx))$value
-  p.unscaled <- stats::integrate(f, val, max(xx))$value
+  C <- cubature::cubintegrate(f, min(xx), max(xx), method = "pcubature")$integral
+  p.unscaled <- cubature::cubintegrate(f, val, max(xx), method = "pcubature")$integral
   p.scaled_gt <- p.unscaled / C
 
-  p.unscaled <- integrate(f,  min(xx), val)$value
+  p.unscaled <- cubature::cubintegrate(f,  min(xx), val, method = "pcubature")$integral
   p.scaled_lt <- p.unscaled / C
 
   p.scaled_gt = ifelse(p.scaled_gt > 1, 1, p.scaled_gt)
