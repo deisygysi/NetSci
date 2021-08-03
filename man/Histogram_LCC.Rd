@@ -7,7 +7,7 @@
 Histogram_LCC(LCC_L, Name = NULL)
 }
 \arguments{
-\item{LCC_L}{an output from the function LCC_Significance}
+\item{LCC_L}{an output from the function LCC_Significance or LCC_Bipartide}
 
 \item{Name}{title of the plot}
 }

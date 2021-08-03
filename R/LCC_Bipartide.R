@@ -2,6 +2,9 @@
 #' @description LCC size for Rewire Bipartide Network
 #' @param g Bipartide Graph to be rewired
 #' @param N Number of resamples
+#' @importFrom magrittr `%>%` `%<>%`
+#' @importFrom  igraph components graph_from_data_frame bipartite_mapping degree V E as_incidence_matrix induced_subgraph
+
 #'
 #' @return a list with the LCC
 #' - $LCCZ all values from the randomizations
@@ -13,30 +16,30 @@
 #' @export
 #'
 #' @examples
-#'
 #' nodes = data.frame(c("D1", "D2", "D3", "D4", "D5",
 #'                      "G1", "G2", "G3", "G4", "G6"),
-#'                    type = c(T, T, T, T, T,
-#'                             F, F, F, F, F))
+#'                    type = c(TRUE, TRUE, TRUE, TRUE, TRUE,
+#'                             FALSE, FALSE, FALSE, FALSE, FALSE))
 #'
 #' g = data.frame(from = c("D1", "D2", "D2", "D3", "D4", "D5", "D5", "D3"),
-#'                to =   c("G1", "G1", "G2", "G3", "G4", "G4", "G1", "G6")) %>%
-#'   graph_from_data_frame(., directed = FALSE, vertices = nodes)
+#'                to =   c("G1", "G1", "G2", "G3", "G4", "G4", "G1", "G6"))
 #'
-#' plot(g, layout = layout.bipartite)
+#' g = igraph::graph_from_data_frame(g, directed = FALSE, vertices = nodes)
 #'
-#' components(g)
+#' plot(g, layout = igraph::layout.bipartite)
+#'
+#' igraph::components(g)
 #' LCC_BIP = LCC_Component(g)
 #' Histogram_LCC(LCC_BIP)
 
 LCC_Component = function(g, N = 1000){
-  original =  components(g)
+  original =  igraph::components(g)
   cmp_o = original$csize %>% max
   LCC = list()
 
   for(i in 1:N){
     cmp = BiRewire::birewire.rewire.bipartite(g, verbose = FALSE) %>%
-      components()
+      igraph::components()
     LCC[[i]] = cmp$csize %>% max()
   }
   LCC %<>% unlist()

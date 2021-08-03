@@ -7,7 +7,7 @@ Maintainer: Deisy Morselli Gysi <deisy.ccnr@gmail.com>
 Description: Calculates network measures such as Largest Connected Component (LCC), Proximity, Separation, Jaccard Index, 
     along with permutation, when needed. 
 Imports: igraph, magrittr, wTO, CoDiNA, dplyr, Rfast,
-         utils, binr
+         utils, binr, BiRewire, cubature
 License: GPL-2
 Encoding: UTF-8
 LazyData: true
