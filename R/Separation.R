@@ -14,7 +14,7 @@
 
 
 #' @example
-#' #' set.seed(12)
+#' set.seed(12)
 #' x = data.frame(n1 = sample(LETTERS[1:5]),
 #'                n2 =  sample(LETTERS[1:20]))
 #'
@@ -22,8 +22,11 @@
 #' D2 = data.frame(gene = c("E", "C",  "R" , "J", "Q", "O"), disease = "D2")
 #' D3 = data.frame(gene = c("E", "G", "T", "P"), disease = "D3")
 #' D4 = data.frame(gene = c("A", "B", "E"), disease = "D4")
+#' D5 = data.frame(gene = c("D", "F", "L"), disease = "D5")
+#' D6 = data.frame(gene = c("D", "F", "K"), disease = "D6")
+#' D7 = data.frame(gene = c("A", "B" ,"F", "K"), disease = "D7")
 #'
-#' Diseases = rbind(D1, D2, D3, D4)
+#' Diseases = rbind(D1, D2, D3, D4, D5, D6, D7)
 #' Diseases %<>% dplyr::select(disease, gene)
 #' g = igraph::graph_from_data_frame(x, directed = F)
 #' g = simplify(g)
@@ -36,7 +39,8 @@ separation = function(G, ST){
   ST$Target %<>% as.character()
   ST %<>% dplyr::filter(Target %in% V(G)$name)
   d = ST$ID %>% unique()
-  asp = igraph::shortest.paths(G, v=unique(ST$Target), to = unique(ST$Target))
+  asp = igraph::shortest.paths(G, v=unique(ST$Target),
+                               to = unique(ST$Target))
 
   # S_aa = list()
   S_ab = S_ab.tmp = matrix(NA, ncol = length(d), nrow = length(d))
@@ -74,7 +78,7 @@ separation = function(G, ST){
     # }
   }
   close(pb)
-  message("Calculating S_ab..\n")
+  message("Calculating S_ab...\n")
   ### calculate the sabs
   pb <- txtProgressBar(min = 0, max = (length(d)), style = 3)
   for(i in 1:length(d)){
@@ -84,7 +88,7 @@ separation = function(G, ST){
     }
   }
   close(pb)
-  message("Done..\n")
+  message("Done...\n")
   colnames(S_ab)= rownames(S_ab) = d
   colnames(S_ab.tmp)= rownames(S_ab.tmp) = d
   return(list(Sab = S_ab, Dab = S_ab.tmp))
