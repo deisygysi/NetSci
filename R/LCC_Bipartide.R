@@ -14,7 +14,6 @@
 #'
 #' @examples
 #'
-
 #' nodes = data.frame(c("D1", "D2", "D3", "D4", "D5",
 #'                      "G1", "G2", "G3", "G4", "G6"),
 #'                    type = c(T, T, T, T, T,
@@ -27,6 +26,8 @@
 #' plot(g, layout = layout.bipartite)
 #'
 #' components(g)
+#' LCC_BIP = LCC_Component(g)
+#' Histogram_LCC(LCC_BIP)
 
 LCC_Component = function(g, N = 1000){
   original =  components(g)
@@ -34,7 +35,7 @@ LCC_Component = function(g, N = 1000){
   LCC = list()
 
   for(i in 1:N){
-    cmp = BiRewire::birewire.rewire.bipartite(g) %>%
+    cmp = BiRewire::birewire.rewire.bipartite(g, verbose = FALSE) %>%
       components()
     LCC[[i]] = cmp$csize %>% max()
   }
@@ -45,11 +46,12 @@ LCC_Component = function(g, N = 1000){
   Z = (cmp_o-muC)/sdC
   p = pvals(x = LCC, val = cmp_o )
 
-  out = list(LCCZ = LCC,
+  out = list(LCC = cmp_o,
+    LCCZ = LCC,
              mean = mean(LCC),
              sd = sd(LCC),
              Z = Z,
-             p = p$p_gt
+    emp_p = p$p_gt
                )
   return(out)
 }
