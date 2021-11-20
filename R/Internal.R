@@ -200,7 +200,7 @@ pvals = function(x, val){
   yy <- d$y
 
   f <- stats::approxfun(xx, yy, rule = 2)
-  C <- cubature::cubintegrate(f, min(xx), max(xx), method = "pcubature")$integral
+  C <- cubature::cubintegrate(f, min(xx, val), max(xx, val), method = "pcubature")$integral
   p.unscaled <- cubature::cubintegrate(f, val, max(xx), method = "pcubature")$integral
   p.scaled_gt <- p.unscaled / C
 
@@ -213,6 +213,135 @@ pvals = function(x, val){
   p.scaled_lt = ifelse(p.scaled_lt > 1, 1, p.scaled_lt)
   p.scaled_lt = ifelse(p.scaled_lt < 0, 0, p.scaled_lt)
 
+
   return(list(p_gt = p.scaled_gt,
               p_lt = p.scaled_lt))
 }
+
+
+##### Fct for separation
+
+saa = function(g1, g2, sps){
+
+  if (identical(g1,g2)){
+    tmp = sps[g1, g2]
+    diag(tmp) <- Inf
+    tmp = apply(tmp,1,min)
+    tmp = tmp[!is.infinite(tmp)] %>%
+      mean
+  } else{
+    tmp = sps[g1, g2]
+    t1 = apply(tmp,1,min)
+    t2 = apply(tmp,2,min)
+    tmp = c(t1, t2)
+    tmp = tmp[!is.infinite(tmp)] %>%
+      mean
+  }
+  return(tmp)
+}
+
+
+
+resample = function(total,
+                    n){
+  samples = sample(1:total,
+                   size = n,
+                   replace = F)
+  return(samples)
+}
+
+resample_saa = function(i){
+  require(magrittr)
+  # require(igraph)
+
+  tmp = list()
+  for(n in 1:N){
+    tmp[[n]] = resample(n = nodes_ID$n[i],
+                        total = nnodes)
+  }
+
+
+  saa_star_tmp = list()
+  for(runs in 1:N){
+    saa_star_tmp[[runs]] = saa(tmp[[runs]],
+                               tmp[[runs]],
+                               sps = all_sps)
+  }
+
+  saa_original = ST$Target[ST$ID == d[i]] %>%
+    saa(.,., sps = all_sps)
+  saa_star_tmp %<>% unlist()
+  saa_stars = saa_star_tmp %>%
+    t %>%
+    as.data.frame() %>%
+    dplyr::mutate(Disease = d[i],
+                  Saa_Dis = saa_original)
+
+  SAMPLES = tmp %>%
+    unlist %>%
+    matrix(., nrow = N, byrow = F)
+  return(list(saa_stars = saa_stars, SAMPLES = SAMPLES))
+}
+
+requires = function(){
+  require(magrittr)
+  require(igraph)
+  require(dplyr)
+  require(parallel)
+}
+
+SAB_complete = function(i){
+  require(magrittr)
+  tmp =
+    Sab_tmp[i,1:N] %>%
+    as.numeric %>%
+    pvals(., Sab_tmp$Saa_Dis[i])
+
+  pval = tmp$p_lt %>% as.numeric()
+
+  SAB = Sab_tmp[i,] %>%
+    dplyr::select(x,
+                  y,
+                  Sab = Saa_Dis) %>%
+    dplyr::mutate(pvalue_lt = pval)
+
+  return(SAB)
+}
+
+
+sab_aux = function(j){
+  X = 0; Sab_tmp = list()
+  k = j
+  while(k < length(d)){
+    k = k + 1
+    X = X + 1
+    sab_star = list()
+    for(resample_id in 1:N){
+      sab_star[[resample_id]] = saa(SAMPLES[[k]][resample_id,],
+                                    SAMPLES[[j]][resample_id,],
+                                    sps = all_sps)
+    }
+    sab_original =
+      saa(ST$Target[ST$ID == d[j]],
+          ST$Target[ST$ID == d[k]],
+          sps = all_sps)
+
+    tmp2 = sab_star %>%
+      unlist() %>%
+      t %>%
+      as.data.frame() %>%
+      dplyr::mutate(Saa_Dis = sab_original)
+
+    tmp3 = saa_stars %>%
+      dplyr::filter(Disease %in% c(d[j], d[k])) %>%
+      dplyr::select(-Disease) %>%
+      colMeans()
+
+    Sab_tmp[[X]]  = (tmp2 - tmp3) %>%
+      dplyr:: mutate(x = d[j],
+                     y = d[k])
+  }
+  return(Sab_tmp = Sab_tmp %>%
+           dplyr::bind_rows())
+}
+
