@@ -8,12 +8,9 @@
 #' @importFrom magrittr `%>%` `%<>%`
 #' @importFrom igraph shortest.paths graph_from_data_frame bipartite_mapping degree V E as_incidence_matrix induced_subgraph
 #' @importFrom dplyr filter
-
 #' @return the separation and distance of modules.
 #' @export
-
-
-#' @example
+#' @examples
 #' set.seed(12)
 #' x = data.frame(n1 = sample(LETTERS[1:5]),
 #'                n2 =  sample(LETTERS[1:20]))
