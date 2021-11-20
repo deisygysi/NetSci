@@ -11,25 +11,25 @@
 #'                n2 =  sample(LETTERS[1:20]))
 #'
 #' g = igraph::graph_from_data_frame(x, directed = F)
-#' g = simplify(g) 
+#' g = simplify(g)
 #' LCC = extract_LCC(g)
-#' 
-#' 
+#'
+#'
 extract_LCC = function(g){
-  mem = g %>% components()
-  mem = mem$membership %>% 
-    as.data.frame() 
-  
+  mem = g %>% igraph::components()
+  mem = mem$membership %>%
+    as.data.frame()
+
   names(mem) = c("cluster")
   mem$nodes = row.names(mem)
-  
-  keep = mem %>% 
-    group_by(cluster) %>%
-    mutate(n = n()) %>%
-    ungroup() %>% 
-    filter(n == max(n)) %>%
-    pull(nodes)
-  
-  g %<>% induced_subgraph(., keep)
+
+  keep = mem %>%
+    dplyr::group_by(cluster) %>%
+    dplyr::mutate(n = n()) %>%
+    dplyr::ungroup() %>%
+    dplyr::filter(n == max(n)) %>%
+    dplyr::pull(nodes)
+
+  g %<>% igraph::induced_subgraph(., keep)
   return(g)
 }

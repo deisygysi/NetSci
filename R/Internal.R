@@ -251,9 +251,10 @@ resample = function(total,
 }
 
 resample_saa = function(i){
-  require(magrittr)
+  # require(magrittr)
   # require(igraph)
-
+  `%>%`<- magrittr::`%>%`()
+  `%>%`<- magrittr::`%<>%`()
   tmp = list()
   for(n in 1:N){
     tmp[[n]] = resample(n = nodes_ID$n[i],
@@ -283,15 +284,17 @@ resample_saa = function(i){
   return(list(saa_stars = saa_stars, SAMPLES = SAMPLES))
 }
 
-requires = function(){
-  require(magrittr)
-  require(igraph)
-  require(dplyr)
-  require(parallel)
-}
+# requires = function(){
+#   require(magrittr)
+#   require(igraph)
+#   require(dplyr)
+#   require(parallel)
+# }
 
 SAB_complete = function(i){
-  require(magrittr)
+  # require(magrittr)
+  `%>%`<- magrittr::`%>%`()
+  `%>%`<- magrittr::`%<>%`()
   tmp =
     Sab_tmp[i,1:N] %>%
     as.numeric %>%
