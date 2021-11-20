@@ -1,7 +1,7 @@
 Package: NetSci
 Type: Package
 Title: Calculates Basic Network Measures Commonly Used in Network Medicine
-Version: 0.1.1
+Version: 0.1.2
 Author: Deisy Gysi 
 Maintainer: Deisy Morselli Gysi <deisy.ccnr@gmail.com>
 Description: Calculates network measures such as Largest Connected Component (LCC), Proximity, Separation, Jaccard Index, 
