@@ -23,13 +23,10 @@ separation_Significance(
 
 \item{correct_by_target}{TRUE by default. If you want to use the set of targets for the permutation or the full network.}
 }
-\value{
-
-}
 \description{
 Calculates the separation of two set of targets on a network and assigns a p-value to it.
 Often used to measure separation of disease modules in a interactome.
 Separation is calculated as in Menche, J. et al (2015) <doi:10.1126/science.1257601>.
-p-values are calculates based on the permutation of nodes, you can set the full network to be 
+p-values are calculates based on the permutation of nodes, you can set the full network to be
 in the set for permutation or can select the ones you include as input.
 }

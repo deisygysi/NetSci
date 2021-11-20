@@ -20,8 +20,8 @@ set.seed(12)
 x = data.frame(n1 = sample(LETTERS[1:5]),
                n2 =  sample(LETTERS[1:20]))
 
-g = igraph::graph_from_data_frame(x, directed = F)
-g = simplify(g)
+g = igraph::graph_from_data_frame(x, directed = FALSE)
+g = igraph::simplify(g)
 LCC = extract_LCC(g)
 
 

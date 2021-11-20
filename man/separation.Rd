@@ -20,6 +20,7 @@ Often used to measure separation of disease modules in a interactome.
 Separation is calculated as in Menche, J. et al (2015) <doi:10.1126/science.1257601>.
 }
 \examples{
+require(magrittr)
 set.seed(12)
 x = data.frame(n1 = sample(LETTERS[1:5]),
                n2 =  sample(LETTERS[1:20]))
@@ -28,14 +29,11 @@ D1 = data.frame(gene = c("H", "I", "S", "N", "A"), disease = "D1")
 D2 = data.frame(gene = c("E", "C",  "R" , "J", "Q", "O"), disease = "D2")
 D3 = data.frame(gene = c("E", "G", "T", "P"), disease = "D3")
 D4 = data.frame(gene = c("A", "B", "E"), disease = "D4")
-D5 = data.frame(gene = c("D", "F", "L"), disease = "D5")
-D6 = data.frame(gene = c("D", "F", "K"), disease = "D6")
-D7 = data.frame(gene = c("A", "B" ,"F", "K"), disease = "D7")
 
-Diseases = rbind(D1, D2, D3, D4, D5, D6, D7)
+Diseases = rbind(D1, D2, D3, D4)
 Diseases \%<>\% dplyr::select(disease, gene)
-g = igraph::graph_from_data_frame(x, directed = F)
-g = simplify(g)
+g = igraph::graph_from_data_frame(x, directed = FALSE)
+g = igraph::simplify(g)
 
 separation(G = g, ST = Diseases)
 }
