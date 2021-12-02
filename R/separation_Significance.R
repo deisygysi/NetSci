@@ -35,7 +35,7 @@
 #' g = igraph::graph_from_data_frame(x, directed = FALSE)
 #' g = igraph::simplify(g)
 #'
-#' #separation_Significance(G = g, ST = Diseases)
+#' separation_Significance(G = g, ST = Diseases)
 
 
 separation_Significance =  function(G,
@@ -48,7 +48,7 @@ separation_Significance =  function(G,
   G %<>% extract_LCC()
   names(ST)[1:2] = c("ID", "Target")
   ST$Target %<>% as.character()
-  ST %<>% dplyr::filter(Target %in% V(G)$name)
+  ST %<>% dplyr::filter(Target %in% igraph::V(G)$name)
 
   if(correct_by_target){
     ts = unique(ST$Target)
@@ -86,11 +86,18 @@ separation_Significance =  function(G,
   rm(d)
   rm(SAMPLES)
 
+  #### Include functions from Internal
+  NetSci.Sep$resample_saa = NetSci:::resample_saa
+  NetSci.Sep$saa = NetSci:::saa
+  NetSci.Sep$resample = NetSci:::resample
+  NetSci.Sep$pvals = NetSci:::pvals
+
+
   cl = parallel::makeCluster(Threads)
-  parallel::clusterExport(cl, "NetSci:::resample_saa")
-  parallel::clusterExport(cl , "NetSci:::saa")
-  parallel::clusterExport(cl , "NetSci:::resample")
-  parallel::clusterExport(cl , "NetSci:::pvals")
+  parallel::clusterExport(cl, "resample_saa", envir = NetSci.Sep)
+  parallel::clusterExport(cl , "saa", envir = NetSci.Sep)
+  parallel::clusterExport(cl , "resample", envir = NetSci.Sep)
+  parallel::clusterExport(cl , "pvals", envir = NetSci.Sep)
 
   parallel::clusterExport(cl , "nodes_ID", envir = NetSci.Sep)
   parallel::clusterExport(cl , "N", envir = NetSci.Sep)

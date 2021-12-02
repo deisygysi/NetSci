@@ -49,5 +49,5 @@ Diseases \%<>\% dplyr::select(disease, gene)
 g = igraph::graph_from_data_frame(x, directed = FALSE)
 g = igraph::simplify(g)
 
-#separation_Significance(G = g, ST = Diseases)
+separation_Significance(G = g, ST = Diseases)
 }
