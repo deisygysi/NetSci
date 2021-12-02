@@ -87,10 +87,10 @@ separation_Significance =  function(G,
   rm(SAMPLES)
 
   cl = parallel::makeCluster(Threads)
-  parallel::clusterExport(cl, "resample_saa")
-  parallel::clusterExport(cl , "saa")
-  parallel::clusterExport(cl , "resample")
-  parallel::clusterExport(cl , "pvals")
+  parallel::clusterExport(cl, "NetSci:::resample_saa")
+  parallel::clusterExport(cl , "NetSci:::saa")
+  parallel::clusterExport(cl , "NetSci:::resample")
+  parallel::clusterExport(cl , "NetSci:::pvals")
 
   parallel::clusterExport(cl , "nodes_ID", envir = NetSci.Sep)
   parallel::clusterExport(cl , "N", envir = NetSci.Sep)
