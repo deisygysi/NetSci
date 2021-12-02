@@ -34,15 +34,16 @@
 #' g = igraph::graph_from_data_frame(x, directed = F)
 #' g = simplify(g)
 #'
-#' separation(G = g, ST = Diseases)
+#' separation_Significance(G = g, ST = Diseases)
 
 
 separation_Significance =  function(G,
-                        ST,
-                        Threads = 10,
-                        N = 1000,
-                        correct_by_target = TRUE){
+                                    ST,
+                                    Threads = 10,
+                                    N = 1000,
+                                    correct_by_target = TRUE){
   # requires()
+  NetSci.Sep <- new.env()
   G %<>% extract_LCC()
   names(ST)[1:2] = c("ID", "Target")
   ST$Target %<>% as.character()
@@ -55,9 +56,9 @@ separation_Significance =  function(G,
   }
 
   d = ST$ID %>% unique()
+  message("Starting now. It might take some time, please be patient.\n")
   all_sps = igraph::distances(G, v = ts, to = ts)
 
-  message("Starting now. It might take some time, please be patient.\n")
 
   nnodes = nrow(all_sps)
   nodes_ID = ST %>%
@@ -66,7 +67,7 @@ separation_Significance =  function(G,
 
   SAMPLES = list()
 
-  NetSci.Sep <- new.env()
+
   NetSci.Sep$nodes_ID = nodes_ID
   NetSci.Sep$N = N
   NetSci.Sep$nnodes = nnodes
@@ -75,6 +76,8 @@ separation_Significance =  function(G,
   NetSci.Sep$ST = ST
   NetSci.Sep$SAMPLES = SAMPLES
   NetSci.Sep$d = d
+
+  rm(all_sps)
 
   cl = parallel::makeCluster(Threads)
   parallel::clusterExport(cl, "resample_saa")
@@ -105,6 +108,20 @@ separation_Significance =  function(G,
   NetSci.Sep$SAMPLES = SAMPLES
   NetSci.Sep$saa_stars = saa_stars
 
+  # parallel::stopCluster(cl)
+  #
+  # cl = parallel::makeCluster(Threads)
+  # parallel::clusterExport(cl, "resample_saa")
+  # parallel::clusterExport(cl , "saa")
+  # parallel::clusterExport(cl , "resample")
+  # parallel::clusterExport(cl , "pvals")
+  #
+  # parallel::clusterExport(cl , "nodes_ID", envir = NetSci.Sep)
+  # parallel::clusterExport(cl , "N", envir = NetSci.Sep)
+  # parallel::clusterExport(cl , "nnodes", envir = NetSci.Sep)
+  # parallel::clusterExport(cl , "all_sps", envir = NetSci.Sep)
+  # parallel::clusterExport(cl , "ST", envir = NetSci.Sep)
+  # parallel::clusterExport(cl , "d", envir = NetSci.Sep)
   parallel::clusterExport(cl , "saa_stars", envir = NetSci.Sep)
   parallel::clusterExport(cl , "SAMPLES", envir = NetSci.Sep)
 
@@ -116,10 +133,9 @@ separation_Significance =  function(G,
   Sab_tmp$Saa_Dis = ifelse(is.nan(Sab_tmp$Saa_Dis), Inf, Sab_tmp$Saa_Dis)
   message("Now we are almost there. Hold on :)\n")
 
-
   Sab_tmp[is.na(Sab_tmp)] <- Inf
   NetSci.Sep$Sab_tmp = Sab_tmp
-
+  rm(Sab_tmp)
 
   parallel::clusterExport(cl , "Sab_tmp", envir = NetSci.Sep)
 
