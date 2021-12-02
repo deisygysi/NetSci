@@ -253,8 +253,8 @@ resample = function(total,
 resample_saa = function(i){
   # require(magrittr)
   # require(igraph)
-  `%>%`<- magrittr::`%>%`()
-  `%>%`<- magrittr::`%<>%`()
+  `%>%`<- magrittr::`%>%`
+  `%<>%`<- magrittr::`%<>%`
   tmp = list()
   for(n in 1:N){
     tmp[[n]] = resample(n = nodes_ID$n[i],
@@ -263,6 +263,7 @@ resample_saa = function(i){
 
 
   saa_star_tmp = list()
+
   for(runs in 1:N){
     saa_star_tmp[[runs]] = saa(tmp[[runs]],
                                tmp[[runs]],
@@ -271,16 +272,22 @@ resample_saa = function(i){
 
   saa_original = ST$Target[ST$ID == d[i]] %>%
     saa(.,., sps = all_sps)
-  saa_star_tmp %<>% unlist()
+
+  # saa_star_tmp %<>% unlist()
+
   saa_stars = saa_star_tmp %>%
-    t %>%
-    as.data.frame() %>%
+    unlist() %>%
+    t() %>%
+    as.data.frame()
+
+  saa_stars %<>%
     dplyr::mutate(Disease = d[i],
                   Saa_Dis = saa_original)
 
   SAMPLES = tmp %>%
     unlist %>%
     matrix(., nrow = N, byrow = F)
+
   return(list(saa_stars = saa_stars, SAMPLES = SAMPLES))
 }
 
@@ -293,8 +300,8 @@ resample_saa = function(i){
 
 SAB_complete = function(i){
   # require(magrittr)
-  `%>%`<- magrittr::`%>%`()
-  `%>%`<- magrittr::`%<>%`()
+  `%>%`<- magrittr::`%>%`
+  `%<>%`<- magrittr::`%<>%`
   tmp =
     Sab_tmp[i,1:N] %>%
     as.numeric %>%

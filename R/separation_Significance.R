@@ -16,6 +16,7 @@
 #' @importFrom parallel makeCluster clusterExport clusterApplyLB stopCluster
 #' @export
 #'
+#' @examples
 #' set.seed(12)
 #' require(magrittr)
 #' x = data.frame(n1 = sample(LETTERS[1:5]),
@@ -31,10 +32,10 @@
 #'
 #' Diseases = rbind(D1, D2, D3, D4, D5, D6, D7)
 #' Diseases %<>% dplyr::select(disease, gene)
-#' g = igraph::graph_from_data_frame(x, directed = F)
-#' g = simplify(g)
+#' g = igraph::graph_from_data_frame(x, directed = FALSE)
+#' g = igraph::simplify(g)
 #'
-#' separation_Significance(G = g, ST = Diseases)
+#' #separation_Significance(G = g, ST = Diseases)
 
 
 separation_Significance =  function(G,
@@ -78,6 +79,12 @@ separation_Significance =  function(G,
   NetSci.Sep$d = d
 
   rm(all_sps)
+  rm(ST)
+  # rm(nodes_ID)
+  rm(N)
+  rm(nnodes)
+  rm(d)
+  rm(SAMPLES)
 
   cl = parallel::makeCluster(Threads)
   parallel::clusterExport(cl, "resample_saa")
@@ -93,9 +100,9 @@ separation_Significance =  function(G,
   parallel::clusterExport(cl , "d", envir = NetSci.Sep)
   parallel::clusterExport(cl , "SAMPLES", envir = NetSci.Sep)
 
-
-
-  tmporary = parallel::clusterApplyLB(cl, 1:nrow(nodes_ID), resample_saa)
+  MAX = nrow(NetSci.Sep$nodes_ID)
+  tmporary = parallel::clusterApplyLB(cl, 1:MAX,
+                                      resample_saa)
 
   message("Phew. The first part is done. Not ready yet.\n")
   SAMPLES = list(); saa_stars = list()
@@ -135,7 +142,7 @@ separation_Significance =  function(G,
 
   Sab_tmp[is.na(Sab_tmp)] <- Inf
   NetSci.Sep$Sab_tmp = Sab_tmp
-  rm(Sab_tmp)
+  # rm(Sab_tmp)
 
   parallel::clusterExport(cl , "Sab_tmp", envir = NetSci.Sep)
 
