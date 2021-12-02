@@ -8,7 +8,7 @@
 #' @param G The original graph (often an interactome / PPI).
 #' @param ST Set-Target data. It is a data.frame with two columns. ID and Target.
 #' @param Threads How many threads you'd like to use (for parallel computation).
-#' @param N = 1000 The number of permutations
+#' @param N default to 1000. The number of permutations
 #' @param correct_by_target TRUE by default. If you want to use the set of targets for the permutation or the full network.
 #' @importFrom magrittr `%>%` `%<>%`
 #' @importFrom igraph shortest.paths distances graph_from_data_frame bipartite_mapping degree V E as_incidence_matrix induced_subgraph
@@ -35,7 +35,10 @@
 #' g = igraph::graph_from_data_frame(x, directed = FALSE)
 #' g = igraph::simplify(g)
 #'
-#' separation_Significance(G = g, ST = Diseases)
+#' separation_Significance(G = g,
+#' ST = Diseases,
+#' correct_by_target = FALSE,
+#' Threads = 2)
 
 
 separation_Significance =  function(G,
@@ -53,11 +56,11 @@ separation_Significance =  function(G,
   if(correct_by_target){
     ts = unique(ST$Target)
   } else{
-    ts = V(G)$name
+    ts = igraph::V(G)$name
   }
 
   d = ST$ID %>% unique()
-  message("Starting now. It might take some time, please be patient.\n")
+  message("Calculating distances...")
   all_sps = igraph::distances(G, v = ts, to = ts)
 
 
@@ -106,12 +109,14 @@ separation_Significance =  function(G,
   parallel::clusterExport(cl , "ST", envir = NetSci.Sep)
   parallel::clusterExport(cl , "d", envir = NetSci.Sep)
   parallel::clusterExport(cl , "SAMPLES", envir = NetSci.Sep)
+  message("Starting now.
+          It might take some time, please be patient.")
 
   MAX = nrow(NetSci.Sep$nodes_ID)
   tmporary = parallel::clusterApplyLB(cl, 1:MAX,
-                                      resample_saa)
+                                      NetSci:::resample_saa)
 
-  message("Phew. The first part is done. Not ready yet.\n")
+  message("1/4 done.")
   SAMPLES = list(); saa_stars = list()
   for(diseases_all in 1:length(tmporary)){
     SAMPLES[[diseases_all]] = tmporary[[diseases_all]]$SAMPLES
@@ -122,30 +127,16 @@ separation_Significance =  function(G,
   NetSci.Sep$SAMPLES = SAMPLES
   NetSci.Sep$saa_stars = saa_stars
 
-  # parallel::stopCluster(cl)
-  #
-  # cl = parallel::makeCluster(Threads)
-  # parallel::clusterExport(cl, "resample_saa")
-  # parallel::clusterExport(cl , "saa")
-  # parallel::clusterExport(cl , "resample")
-  # parallel::clusterExport(cl , "pvals")
-  #
-  # parallel::clusterExport(cl , "nodes_ID", envir = NetSci.Sep)
-  # parallel::clusterExport(cl , "N", envir = NetSci.Sep)
-  # parallel::clusterExport(cl , "nnodes", envir = NetSci.Sep)
-  # parallel::clusterExport(cl , "all_sps", envir = NetSci.Sep)
-  # parallel::clusterExport(cl , "ST", envir = NetSci.Sep)
-  # parallel::clusterExport(cl , "d", envir = NetSci.Sep)
   parallel::clusterExport(cl , "saa_stars", envir = NetSci.Sep)
   parallel::clusterExport(cl , "SAMPLES", envir = NetSci.Sep)
 
-  message("\n Starting the second part...\n")
+  message("2/4 done.")
 
-  Sab_tmp  = parallel::clusterApplyLB(cl, 1:nrow(nodes_ID), sab_aux) %>%
+  Sab_tmp  = parallel::clusterApplyLB(cl, 1:nrow(nodes_ID), NetSci:::sab_aux) %>%
     dplyr::bind_rows()
 
   Sab_tmp$Saa_Dis = ifelse(is.nan(Sab_tmp$Saa_Dis), Inf, Sab_tmp$Saa_Dis)
-  message("Now we are almost there. Hold on :)\n")
+  message("3/4 done.")
 
   Sab_tmp[is.na(Sab_tmp)] <- Inf
   NetSci.Sep$Sab_tmp = Sab_tmp
@@ -156,9 +147,11 @@ separation_Significance =  function(G,
 
   SAB = parallel::clusterApplyLB(cl,
                                  1:nrow(Sab_tmp),
-                                 SAB_complete) %>%
+                                 NetSci:::SAB_complete) %>%
     dplyr::bind_rows()
 
   parallel::stopCluster(cl)
+
+  message("Done.")
   return(SAB)
 }
