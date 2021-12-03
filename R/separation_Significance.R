@@ -144,7 +144,6 @@ separation_Significance =  function(G,
 
   parallel::clusterExport(cl , "Sab_tmp", envir = NetSci.Sep)
 
-  message("maybe??")
 
   SAB = parallel::clusterApplyLB(cl,
                                  1:nrow(Sab_tmp),
