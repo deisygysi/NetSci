@@ -43,7 +43,7 @@
 
 separation_Significance =  function(G,
                                     ST,
-                                    Threads = 10,
+                                    Threads = 2,
                                     N = 1000,
                                     correct_by_target = TRUE){
   # requires()
@@ -147,7 +147,11 @@ separation_Significance =  function(G,
 
   SAB = parallel::clusterApplyLB(cl,
                                  1:nrow(Sab_tmp),
-                                 NetSci:::SAB_complete) %>%
+                                 NetSci:::SAB_complete)
+
+  message("4/4 done.")
+
+  SAB %<>%
     dplyr::bind_rows()
 
   parallel::stopCluster(cl)
