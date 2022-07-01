@@ -90,11 +90,17 @@ separation_Significance =  function(G,
   rm(SAMPLES)
 
   #### Include functions from Internal
-  NetSci.Sep$resample_saa = NetSci:::resample_saa
-  NetSci.Sep$saa = NetSci:::saa
-  NetSci.Sep$resample = NetSci:::resample
-  NetSci.Sep$pvals = NetSci:::pvals
+  # NetSci.Sep$resample_saa = NetSci:::resample_saa
+  # NetSci.Sep$saa = NetSci:::saa
+  # NetSci.Sep$resample = NetSci:::resample
+  # NetSci.Sep$pvals = NetSci:::pvals
 
+  assign("resample_saa", resample_saa, envir = NetSci.Sep)
+  assign("saa", saa, envir = NetSci.Sep)
+  assign("resample", resample, envir = NetSci.Sep)
+  assign("pvals", pvals, envir = NetSci.Sep)
+
+  assign("SAB_complete", SAB_complete, envir = NetSci.Sep)
 
   cl = parallel::makeCluster(Threads)
   parallel::clusterExport(cl, "resample_saa", envir = NetSci.Sep)
@@ -114,7 +120,7 @@ separation_Significance =  function(G,
 
   MAX = nrow(NetSci.Sep$nodes_ID)
   tmporary = parallel::clusterApplyLB(cl, 1:MAX,
-                                      NetSci:::resample_saa)
+                                      resample_saa)
 
   message("1/4 done.")
   SAMPLES = list(); saa_stars = list()
@@ -132,7 +138,7 @@ separation_Significance =  function(G,
 
   message("2/4 done.")
 
-  Sab_tmp  = parallel::clusterApplyLB(cl, 1:nrow(nodes_ID), NetSci:::sab_aux) %>%
+  Sab_tmp  = parallel::clusterApplyLB(cl, 1:nrow(nodes_ID), sab_aux) %>%
     dplyr::bind_rows()
 
   Sab_tmp$Saa_Dis = ifelse(is.nan(Sab_tmp$Saa_Dis), Inf, Sab_tmp$Saa_Dis)
@@ -147,7 +153,7 @@ separation_Significance =  function(G,
 
   SAB = parallel::clusterApplyLB(cl,
                                  1:nrow(Sab_tmp),
-                                 NetSci:::SAB_complete)
+                                 SAB_complete)
 
   message("4/4 done.")
 
