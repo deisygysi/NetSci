@@ -4,13 +4,7 @@
 \alias{separation_Significance}
 \title{Separation Significance}
 \usage{
-separation_Significance(
-  G,
-  ST,
-  Threads = 10,
-  N = 1000,
-  correct_by_target = TRUE
-)
+separation_Significance(G, ST, Threads = 2, N = 1000, correct_by_target = TRUE)
 }
 \arguments{
 \item{G}{The original graph (often an interactome / PPI).}

@@ -9,7 +9,7 @@
 #' @importFrom magrittr `%>%` `%<>%`
 #' @importFrom stats quantile ecdf approxfun integrate
 #' @importFrom dplyr summarise group_by n
-#' @importFrom  igraph graph_from_data_frame bipartite_mapping degree V E as_incidence_matrix induced_subgraph
+#' @importFrom igraph graph_from_data_frame bipartite_mapping degree V E as_incidence_matrix induced_subgraph get.edgelist is.bipartite graph.edgelist is.igraph is.directed
 #' @keywords internal
 #'
 #'
@@ -106,6 +106,7 @@ LCC = function(g){
 }
 
 
+###
 ### Functions for proximity
 ###
 

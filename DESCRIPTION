@@ -1,13 +1,14 @@
 Package: NetSci
 Type: Package
 Title: Calculates Basic Network Measures Commonly Used in Network Medicine
-Version: 0.1.3
+Version: 1.0.0
 Author: Deisy Gysi 
 Maintainer: Deisy Morselli Gysi <deisy.ccnr@gmail.com>
 Description: Calculates network measures such as Largest Connected Component (LCC), Proximity, Separation, Jaccard Index, 
     along with permutation, when needed. 
-Imports: igraph, magrittr, wTO, CoDiNA, dplyr, Rfast,
-         utils, binr, BiRewire, cubature
+Imports: igraph, magrittr, wTO, dplyr, Rfast,
+         utils, binr, cubature
+Suggests: CoDiNA
 License: GPL-2
 Encoding: UTF-8
 LazyData: true

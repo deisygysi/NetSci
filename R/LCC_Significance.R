@@ -66,5 +66,6 @@ LCC_Significance = function(N = N, Targets = Targets, G, bins =100, hypothesis =
               sd = sdC,
               Z= Z,
               LCC = LCC_1,
-              emp_p = p))
+              emp_p = p,
+              rLCC = LCC_1/length(Targets)))
 }
