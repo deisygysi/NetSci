@@ -1,6 +1,6 @@
-#' @title LCC_Significance
+#' LCC Significance
 #' @description Calculates the Largest Connected Component (LCC) from a given graph, and calculates its significance using a degree preserving approach.
-#' Menche, J., et al (2015) <doi.org:10.1126/science.1065103>
+#' Menche, J., et al (2015) doi.org:10.1126/science.1065103
 #' @param N Number of randomizations.
 #' @param Targets Name of the nodes that the subgraph will focus on - Those are the nodes you want to know whether if forms an LCC.
 #' @param G The  graph of interest (often, in NetMed it is an interactome - PPI).

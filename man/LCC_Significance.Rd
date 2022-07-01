@@ -2,7 +2,7 @@
 % Please edit documentation in R/LCC_Significance.R
 \name{LCC_Significance}
 \alias{LCC_Significance}
-\title{LCC_Significance}
+\title{LCC Significance}
 \usage{
 LCC_Significance(
   N = N,
@@ -37,7 +37,7 @@ a list with the LCC
 }
 \description{
 Calculates the Largest Connected Component (LCC) from a given graph, and calculates its significance using a degree preserving approach.
-Menche, J., et al (2015) <doi.org:10.1126/science.1065103>
+Menche, J., et al (2015) doi.org:10.1126/science.1065103
 }
 \examples{
 set.seed(666)
