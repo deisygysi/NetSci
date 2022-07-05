@@ -34,15 +34,18 @@
 #' G = g,
 #'  source = S,
 #'  ST = rbind(T1,T2),
-#'  bins = 5,
+#'  bins = 1,
 #'  min_per_bin = 2)
 #'
-#' avr_proximity_multiple_target_sets(set = c('T1', 'T2'),
-#' G = g,
-#'  source = S,
-#'  ST = rbind(T1,T2),
-#'  bins = 5,
-#'  min_per_bin = 2, weighted = TRUE)
+#' # In a weighted graph
+#' # avr_proximity_multiple_target_sets(set = c('T1', 'T2'),
+#' # G = g,
+#' #  source = S,
+#' #  ST = rbind(T1,T2),
+#' #  bins = 1,
+#' #  min_per_bin = 2,
+#' #  weighted = TRUE)
+#'
 avr_proximity_multiple_target_sets = function(set,
                                               G,
                                               ST,
